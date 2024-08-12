@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "CpuInfo.hpp"
 #include "IntelPowerMonitor.h"
+#include "AmdPowerMonitor.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +16,10 @@ int main(int argc, char *argv[])
             if (vendor == "GenuineIntel")
             {
                 intel_power_monitor();
+            }
+            else if (vendor == "AuthenticAMD")
+            {
+                amd_power_monitor();
             }
             else
             {

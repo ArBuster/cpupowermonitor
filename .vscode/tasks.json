@@ -7,7 +7,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${file}", "CpuInfo.cpp", "IntelPowerMonitor.cpp",
+                "${file}", "CpuInfo.cpp", "IntelPowerMonitor.cpp", "AmdPowerMonitor.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
