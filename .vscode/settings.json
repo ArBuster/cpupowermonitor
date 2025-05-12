@@ -72,6 +72,13 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "csignal": "cpp",
+        "strstream": "cpp",
+        "cfenv": "cpp",
+        "codecvt": "cpp",
+        "coroutine": "cpp",
+        "stdfloat": "cpp",
+        "text_encoding": "cpp"
     }
 }

@@ -4,16 +4,18 @@
 #include <chrono>
 #include <termios.h>
 #include <sys/ioctl.h>
+#include <string>
 #include "AmdPowerMonitor.h"
 
-#define _UJ_LEN_ 13
+#define _UJ_LEN_ "11"
+#define _FSCANF_LEN_ (std::string("%") + _UJ_LEN_ + "lld").data()
 
 class AmdPowerMonitor
 {
 private:
     FILE *fp_package = nullptr;
 
-    // 封装功耗，最大值262143328850
+    // 封装功耗，最大值65532610987
     long long package_power[2] = {0};
     // 两次读取功耗的时间间隔
     std::chrono::steady_clock::time_point time[2] = {};
@@ -66,7 +68,7 @@ bool AmdPowerMonitor::open_rapl()
 }
 
 // 监控cpu package功耗。
-// 单位微焦耳，计数器最大值262143328850
+// 单位微焦耳，计数器最大值65532610987
 // 循环读取energy_uj计数器，用最近一次读取的值减去上一次读取的值再除以时间就是功耗
 void AmdPowerMonitor::monitor()
 {
@@ -75,7 +77,7 @@ void AmdPowerMonitor::monitor()
         return;
     }
 
-    fscanf(fp_package, "%12lld", &package_power[0]);
+    fscanf(fp_package, _FSCANF_LEN_, &package_power[0]);
 
     double time_elapse = 0;
     char ch = 0;
@@ -88,7 +90,7 @@ void AmdPowerMonitor::monitor()
         time[i] = std::chrono::steady_clock::now();
         rewind(fp_package);
 
-        fscanf(fp_package, "%12lld", &package_power[i]);
+        fscanf(fp_package, _FSCANF_LEN_, &package_power[i]);
 
         time_elapse = (double)std::chrono::duration_cast<std::chrono::microseconds>(time[i] - time[k]).count();
         printf("\r\033[Kcpu package: %3.2fw", (package_power[i] - package_power[k]) / time_elapse);

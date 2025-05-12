@@ -4,9 +4,11 @@
 #include <chrono>
 #include <termios.h>
 #include <sys/ioctl.h>
+#include <string>
 #include "IntelPowerMonitor.h"
 
-#define _UJ_LEN_ 13
+#define _UJ_LEN_ "12"
+#define _FSCANF_LEN_ (std::string("%") + _UJ_LEN_ + "lld").data()
 
 class IntelPowerMonitor
 {
@@ -91,8 +93,8 @@ void IntelPowerMonitor::monitor()
         return;
     }
 
-    fscanf(fp_package, "%12lld", &package_power[0]);
-    fscanf(fp_iacore, "%12lld", &iacore_power[0]);
+    fscanf(fp_package, _FSCANF_LEN_, &package_power[0]);
+    fscanf(fp_iacore, _FSCANF_LEN_, &iacore_power[0]);
 
     gtuncore_power[0] = package_power[0] - iacore_power[0];
 
@@ -109,8 +111,8 @@ void IntelPowerMonitor::monitor()
         rewind(fp_package);
         rewind(fp_iacore);
 
-        fscanf(fp_package, "%12lld", &package_power[i]);
-        fscanf(fp_iacore, "%12lld", &iacore_power[i]);
+        fscanf(fp_package, _FSCANF_LEN_, &package_power[i]);
+        fscanf(fp_iacore, _FSCANF_LEN_, &iacore_power[i]);
         gtuncore_power[i] = package_power[i] - iacore_power[i];
 
         time_elapse = (double)std::chrono::duration_cast<std::chrono::microseconds>(time[i] - time[k]).count();
